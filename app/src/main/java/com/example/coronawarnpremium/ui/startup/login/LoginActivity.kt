@@ -68,10 +68,8 @@ class LoginActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
             requestTelephonyPermission()
         }
         id = UUID.randomUUID().toString()
-        val userIdView: TextView = findViewById(R.id.userIdTextView)
-        userIdView.text = id
     }
-//6b4a1ba3-3bc7-44c6-8f67-f55b564c1cbd
+
     fun login(view: View){
         launch(Dispatchers.Main) {
             try{

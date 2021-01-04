@@ -4,18 +4,35 @@ import android.R
 import android.content.Context
 import android.util.Log
 import android.view.View
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.example.coronawarnpremium.classes.User
+import com.example.coronawarnpremium.storage.user.UserDatabaseClient
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
 import kotlin.text.Charsets.UTF_8
 
 
 private const val TAG = "NearbyConnectionsApi"
-class ConnectionsApiService(private val context: Context, private val userId: String) {
+class ConnectionsApiService(private val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
     private val STRATEGY = Strategy.P2P_CLUSTER
     private val service_id = "com.example.coronawarnpremium"
     private val connectionsClient: ConnectionsClient = Nearby.getConnectionsClient(context)
     private lateinit var otherUsersId: String
+    private lateinit var userId: String
 
+    /** Start the periodic background work process.  **/
+    override suspend fun doWork(): Result {
+        return try{
+            userId = inputData.getString("userId").toString()
+            startConnectionsService()
+            return Result.success()
+        } catch(e: Exception){
+            Result.failure()
+        }
+    }
+
+    /** Starts looking for other users to initiate a connection.  **/
     private fun startAdvertising() {
         val advertisingOptions: AdvertisingOptions =
             AdvertisingOptions.Builder().setStrategy(STRATEGY).build()
@@ -29,7 +46,7 @@ class ConnectionsApiService(private val context: Context, private val userId: St
             .addOnFailureListener { e: Exception? -> }
     }
 
-    /** Starts looking for other players using Nearby Connections.  */
+    /** Starts looking for other users using Nearby Connections.  **/
     private fun startDiscovery() {
         val discoveryOptions =
             DiscoveryOptions.Builder().setStrategy(STRATEGY).build()
@@ -99,7 +116,7 @@ class ConnectionsApiService(private val context: Context, private val userId: St
     }
 
     /** Finds other users with using Nearby Connections.  */
-    suspend fun startConnectionsService() {
+    private fun startConnectionsService() {
         startAdvertising()
         startDiscovery()
         Log.v(TAG, "Searching for devices")
