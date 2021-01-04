@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.coronawarnpremium.ui.home.HomeFragment"
+        android:label="@string/menu_dashboard"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.example.coronawarnpremium.ui.gallery.GalleryFragment"
+        android:label="@string/menu_account"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_discovered_devices"
+        android:name="com.example.coronawarnpremium.ui.discovered.DiscoveredDevicesFragment"
+        android:label="@string/menu_discovered"
+        tools:layout="@layout/fragment_discovered_devices" />
+
+    <fragment
+        android:id="@+id/nav_contact_diary"
+        android:name="com.example.coronawarnpremium.ui.contactdiary.ContactDiaryFragment"
+        android:label="@string/menu_contact_diary"
+        tools:layout="@layout/fragment_contact_diary" />
+
+    <fragment
+        android:id="@+id/nav_contact_book"
+        android:name="com.example.coronawarnpremium.ui.contactbook.ContactBookFragment"
+        android:label="@string/menu_contact_book"
+        tools:layout="@layout/fragment_contact_book" />
+
+</navigation>

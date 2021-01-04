@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">CoronaWarnPremium</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Layout Headings / Nav Titles -->
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_account">Account</string>
+    <string name="menu_discovered">Discovered devices</string>
+    <string name="menu_logout">Log out</string>
+    <string name="title_activity_discovered_devices">DiscoveredDevices</string>
+    <string name="menu_contact_book">Contact Book</string>
+    <string name="menu_contact_diary">Contact Diary</string>
+
+    <!-- Discovered devices -->
+    <string name="device_name">Device name:</string>
+    <string name="device_imei">Device IMEI:</string>
+    <string name="device_id">Device Id:</string>
+
+    <!-- Dashboard Fragment texts-->
+    <string name="encounters">Devices found:</string>
+    <string name="infectionStatus">Infection status:</string>
+    <string name="tips">Important health tips:</string>
+
+    <string name="testedCardTitle">Have you been tested?</string>
+    <string name="testedCardContent">Protect yourself and others. \nShare your status now!</string>
+    <string name="testedCardInfected">Infected</string>
+    <string name="testedCardNotInfected">Not Infected</string>
+
+    <string name="faqCardTitle">Frequently asked questions</string>
+    <string name="faqCardContent">Here you can find answers on frequently asked questions around our app. You will be forwarded to another page of this app.</string>
+    <string name="title_activity_user_risk">UserRiskActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="noRiskText">Low risk</string>
+    <string name="noRiskEncountered">There has been no risk encounter lately</string>
+    <string name="riskDetectionActive">Risk detection active</string>
+    <string name="riskUpdated">Last updated: Just Now</string>
+    <string name="highRiskText">High risk</string>
+    <string name="riskEncountered">There have been risk encounters lately</string>
+
+    <string name="behavior">Behavior</string>
+    <string name="rightBehavior">This is how you should behave.</string>
+    <string name="washHands">Always remember to wash your hands</string>
+    <string name="sneeze">Don´t sneeze other people in their faces</string>
+    <string name="wearMask">Wear a mask when you are in the public</string>
+    <string name="socialDistance">Keep 1–2m distance to other people</string>
+    <string name="keepBluetoothEnabled">Always keep your bluetooth enabled!</string>
+    <string name="makeATest">Watch out for symptoms of COVID-19!</string>
+    <string name="title_activity_user_risk1">UserRiskActivity1</string>
+
+    <!-- Login Activity -->
+    <string name="emailHint">Enter your EMail-Address</string>
+    <string name="passwordHint">Enter your password</string>
+    <string name="registerTextView">Not registered yet?</string>
+    <string name="tapHere"><u>Tap here to register.</u></string>
+    <string name="loginButton">Login</string>
+    <string name="title_activity_register">RegisterActivity</string>
+
+    <!-- Register activity -->
+    <string name="alreadyRegistered">Already registered?</string>
+    <string name="loginHere"><u>Tap here to login</u></string>
+    <string name="terms"><u>Terms &amp; Conditions</u></string>
+    <string name="acknowledge">I acknowledge the</string>
+    <string name="registerText">Register</string>
+    <string name="usernameHint">Enter your Username here</string>
+</resources>
