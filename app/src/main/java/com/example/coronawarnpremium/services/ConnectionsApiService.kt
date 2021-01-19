@@ -6,10 +6,21 @@ import android.util.Log
 import android.view.View
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.coronawarnpremium.classes.PersonContactDiary
 import com.example.coronawarnpremium.classes.User
+import com.example.coronawarnpremium.storage.contactdiary.ContactDiaryDatabase
+import com.example.coronawarnpremium.storage.contactdiary.ContactDiaryDatabaseClient
 import com.example.coronawarnpremium.storage.user.UserDatabaseClient
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 import kotlin.text.Charsets.UTF_8
 
 
@@ -24,6 +35,8 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
     /** Start the periodic background work process.  **/
     override suspend fun doWork(): Result {
         return try{
+            connectionsClient.stopAdvertising()
+            connectionsClient.stopDiscovery()
             userId = inputData.getString("userId").toString()
             startConnectionsService()
             return Result.success()
@@ -43,7 +56,7 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
             .addOnSuccessListener {
                 Log.v(TAG, "Advertiser started successfully")
             }
-            .addOnFailureListener { e: Exception? -> }
+            .addOnFailureListener { e: Exception? -> throw e!! }
     }
 
     /** Starts looking for other users using Nearby Connections.  **/
@@ -55,7 +68,7 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
             .addOnSuccessListener {
                 Log.v(TAG, "Discoverystarted successfully")
             }
-            .addOnFailureListener { e: java.lang.Exception? ->
+            .addOnFailureListener { e: java.lang.Exception? -> throw e!!
                 //Discovering not possible
             }
     }
@@ -127,7 +140,10 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
         override fun onPayloadReceived(endpointId: String, payload: Payload) {
             //  call function to save payload.asBytes()!! in database
             // opponentChoice = GameChoice.valueOf(String(payload.asBytes()!!, UTF_8))
-            Log.v(TAG, String(payload.asBytes()!!))
+
+            Log.v(TAG, "User found with Id: ${String(payload.asBytes()!!)}")
+            val repClass = ReplacementClass(context)
+            repClass.checkContactDate(String(payload.asBytes()!!))
             //disconnect
             disconnect()
         }
@@ -138,6 +154,34 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
         ) {
             if (update.status == PayloadTransferUpdate.Status.SUCCESS && otherUsersId != "") {
                 //finishRound()
+            }
+        }
+    }
+}
+
+class ReplacementClass(private val context: Context) : CoroutineScope by MainScope(){
+    fun checkContactDate(userId: String){
+        launch(Dispatchers.Main) {
+            val uuid = UUID.randomUUID()
+            val date = LocalDateTime.now().format(
+                    DateTimeFormatter
+                            .ofLocalizedDate(FormatStyle.LONG)
+                            .withLocale(Locale.GERMAN)
+            )
+            val client = ContactDiaryDatabaseClient(context)
+            val person = client.checkContactDate(userId, LocalDateTime.parse(date))
+            if (person == null) {
+                val encounter = PersonContactDiary(
+                        PersondId = uuid.toString(),
+                        UserId = userId,
+                        Name = "",
+                        EMail = "",
+                        Location = "",
+                        EncounterDate = LocalDateTime.parse(date),
+                        EncounterTime = date.format(DateTimeFormatter.ISO_LOCAL_TIME)
+                )
+                client.insert(encounter)
+                Log.v(TAG, "New encounter saved.")
             }
         }
     }

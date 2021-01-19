@@ -10,16 +10,9 @@
     <!-- Layout Headings / Nav Titles -->
     <string name="menu_dashboard">Dashboard</string>
     <string name="menu_account">Account</string>
-    <string name="menu_discovered">Discovered devices</string>
     <string name="menu_logout">Log out</string>
-    <string name="title_activity_discovered_devices">DiscoveredDevices</string>
-    <string name="menu_contact_book">Contact Book</string>
+    <string name="menu_contact_book">Contacts</string>
     <string name="menu_contact_diary">Contact Diary</string>
-
-    <!-- Discovered devices -->
-    <string name="device_name">Device name:</string>
-    <string name="device_imei">Device IMEI:</string>
-    <string name="device_id">Device Id:</string>
 
     <!-- Dashboard Fragment texts-->
     <string name="encounters">Devices found:</string>
@@ -72,4 +65,41 @@
     <string name="acknowledge">I acknowledge the</string>
     <string name="registerText">Register</string>
     <string name="usernameHint">Enter your Username here</string>
+
+    <!-- Contacts -->
+    <string name="emptyListHint">You have no contacts saved. Save contacts to have a better overview in your contact diary.</string>
+    <string name="title_activity_add_contact_dialog">AddContactDialog</string>
+
+    <!-- Add Contact dialog -->
+    <string name="contactDialogTitle">Add New Contact</string>
+    <string name="contactDialogDescription">Enter the Email address of the person you want to add as a contact. After this person accepts your request your contact will automatically be added to your contact book.</string>
+    <string name="Dismiss">Dismiss</string>
+    <string name="sendRequest">Send Request</string>
+    <string name="contactRequestSuccessful">Contact request was sent successfully.</string>
+    <string name="contactEmailNotFound">This Email is not registered.</string>
+    <string name="requestError">There was an error sending the request. Please try again later.</string>
+    <string name="title_activity_terms_conditions_dialog">TermsConditionsDialog</string>
+
+    <!-- Contact info template -->
+    <string name="delete">Delete</string>
+
+    <!-- Account Fragment -->
+    <string name="accountTitle">Account Infos</string>
+    <string name="username">Username:</string>
+    <string name="email">Email:</string>
+    <string name="saveChanges">Save changes</string>
+    <string name="title_activity_contact_encounter_template">ContactEncounterTemplate</string>
+
+    <!-- Contact Diary -->
+    <string name="userId">User Id:</string>
+    <string name="location">Location:</string>
+    <string name="date">Date:</string>
+    <string name="title_activity_request">RequestActivity</string>
+
+    <!-- Request dialog -->
+    <string name="title_activity_request_dialog">RequestDialog</string>
+    <string name="requestDialogTitle">Choose your action</string>
+    <string name="requestDialogAccept">Accept</string>
+    <string name="requestDialogReject">Reject</string>
+    <string name="requestDialogContent">You have a new contact request by: </string>
 </resources>

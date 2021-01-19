@@ -15,10 +15,10 @@ data class User (
     var Username: String = "",
     @ColumnInfo(name = "EMail")
     var EMail: String = "",
-    @ColumnInfo(name = "IMEI")
-    var IMEI: String = "",
     @ColumnInfo(name ="PasswordHash")
     var PasswordHash: String = "",
     @ColumnInfo(name= "Created")
-    var Created: String
+    var Created: String,
+    @ColumnInfo(name= "Infected")
+    var Infected: Boolean
     )

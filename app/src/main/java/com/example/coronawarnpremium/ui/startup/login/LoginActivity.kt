@@ -82,9 +82,9 @@ class LoginActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
                     UserId = id,
                     Username = "Niko",
                     PasswordHash = "aljesfbaoqEBWF",
-                    IMEI = "",
                     EMail = "nikoneigel@gmail.com",
-                    Created = "03.01.2021"
+                    Created = "03.01.2021",
+                    Infected = false
                 )
                 Log.v(TAG, "Login successful")
                 navigateMainActivity(view, user)

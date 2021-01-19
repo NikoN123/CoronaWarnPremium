@@ -1,9 +1,13 @@
 package com.example.coronawarnpremium
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -12,12 +16,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.room.Room
 import androidx.work.*
+import com.example.coronawarnpremium.classes.Contact
 import com.example.coronawarnpremium.classes.User
 import com.example.coronawarnpremium.services.ConnectionsApiService
-import com.example.coronawarnpremium.storage.user.UserDao
-import com.example.coronawarnpremium.storage.user.UserDatabase
+import com.example.coronawarnpremium.services.NotificationService
+import com.example.coronawarnpremium.signalr.SignalRClient
+import com.example.coronawarnpremium.storage.contact.ContactDatabaseClient
 import com.example.coronawarnpremium.storage.user.UserDatabaseClient
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
@@ -33,6 +38,9 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    object signalRSingleton{
+        val client = SignalRClient()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,23 +54,35 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_discovered_devices, R.id.nav_contact_book, R.id.nav_contact_diary), drawerLayout)
+                R.id.nav_home, R.id.nav_account, R.id.nav_contact_book, R.id.nav_contact_diary), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val userJson = intent.getStringExtra("User")
+        var user = User(UserId = "", Username = "", EMail = "", Created = "", Infected = false)
         val gson = Gson()
-        val user = gson.fromJson(userJson, User::class.java)
-        addUser(user)
-
         val mPrefs = getPreferences(Context.MODE_PRIVATE)
-        mPrefs.edit().putString("user", user.UserId).apply()
+        val userJson = intent.getStringExtra("User")
+        if(userJson != null) {
+            Log.v(TAG, "User: $userJson")
+            user = gson.fromJson(userJson, User::class.java)
+            addUser(user)
+
+            mPrefs.edit().putString("user", user.UserId).apply()
+        }
+        else{
+            val client = UserDatabaseClient(baseContext)
+            launch(Dispatchers.Main) {
+                user = client.getAllUsers()!!
+            }
+        }
+
+
+
+        /** Creating and starting backgroundworker **/
+        val constraint = Constraints.Builder().setRequiresDeviceIdle(true).build()
 
         val data = Data.Builder()
         data.putString("userId", user.UserId)
-
-        val constraint = Constraints.Builder().setRequiresDeviceIdle(false).build()
-
         Log.v(TAG, "Starting periodic work")
         val request = PeriodicWorkRequestBuilder<ConnectionsApiService>(15, TimeUnit.MINUTES)
                 .setConstraints(constraint)
@@ -73,6 +93,29 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 "MyUniqueWorkName",
                 ExistingPeriodicWorkPolicy.REPLACE,
                 request)
+
+        if(signalRSingleton.client.checkConnectionStatus() != "CONNECTED"){
+            signalRSingleton.client.createConnection()
+        }
+
+        try {
+            val contactJson = intent.getStringExtra("contact")
+            Log.v(TAG, "ContactJson: $contactJson")
+            if (contactJson != "") {
+                val contact = gson.fromJson(contactJson, Contact::class.java)
+                showRequestDialog(this, contact)
+            }
+        } catch (e: Exception){
+            Log.v(TAG, e.message.toString())
+        }
+
+        val contact2 = Contact()
+        contact2.Username = "Fabian Kuhn"
+        contact2.UserId = "wrgr-4t32ew-23edfd"
+        contact2.EMail = "blablabla@gmail.com"
+        val json = gson.toJson(contact2)
+        val not = NotificationService(this)
+        not.requestReceivedNotification("Request accepted", json)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -88,28 +131,41 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     private fun addUser(user: User){
         launch(Dispatchers.Main){
-            var client = UserDatabaseClient(this@MainActivity)
+            val client = UserDatabaseClient(this@MainActivity)
             client.addUser(user)
         }
     }
 
-    /** Start scan when app is reopened **/
-    override fun onStart() {
-        super.onStart()
+    private fun showRequestDialog(context: Context, contact: Contact) {
+        Log.v(TAG, context.toString())
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_request)
+        dialog.setCanceledOnTouchOutside(false)
 
-        val mPrefs = getPreferences(Context.MODE_PRIVATE)
-        val userId = mPrefs.getString("user", "")
+        val acceptButton = dialog.findViewById(R.id.requestDialogAccept) as Button
+        val rejectButton = dialog.findViewById(R.id.requestDialogReject) as Button
 
-        if(userId != "") {
-            val data = Data.Builder()
-            data.putString("userId", userId)
+        val contactName = dialog.findViewById(R.id.requestDialogUsername) as TextView
+        contactName.text = contact.Username
 
-            val instantWorker = OneTimeWorkRequestBuilder<ConnectionsApiService>()
-                .setInputData(data.build())
-                .build()
-            WorkManager.getInstance(this).enqueueUniqueWork("BluetoothScan", ExistingWorkPolicy.KEEP, instantWorker)
-            Log.v(TAG, "Starting instant worker")
+        acceptButton.setOnClickListener {
+            launch(Dispatchers.Main) {
+                val contactDbClient = ContactDatabaseClient(context)
+                contactDbClient.insert(contact)
+
+                //send data to backend
+                dialog.dismiss()
+            }
         }
+        rejectButton.setOnClickListener {
+            launch(Dispatchers.Main){
+                //send data to backend
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
     }
 
 }

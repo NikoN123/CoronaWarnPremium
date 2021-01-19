@@ -1,11 +1,9 @@
 package com.example.coronawarnpremium.ui.startup.register
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.provider.ContactsContract
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -24,6 +22,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.*
 
+
 private const val TAG ="RegisterActivity"
 class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private lateinit var username: EditText
@@ -31,6 +30,7 @@ class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private lateinit var password: EditText
     private lateinit var checkbox: CheckBox
     private lateinit var button: Button
+    private var boxChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,25 @@ class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         checkbox = findViewById(R.id.acknowledgeCheckbox)
 
         checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            button.isEnabled = isChecked
-            Log.v(TAG, "Checkbox checked")
+            boxChecked = isChecked
+            watcher.onTextChanged("", 0, 0, 0)
+        }
+        username.addTextChangedListener(watcher)
+    }
+
+    private val watcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if(username.text.isEmpty() || email.text.isEmpty() || password.text.isEmpty() || !boxChecked){
+                button.isEnabled = false
+                Log.v(TAG, "Something is false")
+            }
+            else{
+                button.isEnabled = true
+            }
+        }
+        override fun afterTextChanged(s: Editable) {
+
         }
     }
 
@@ -70,17 +87,17 @@ class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                         UserId = "",
                         Username = "Niko",
                         PasswordHash = "aljesfbaoqEBWF",
-                        IMEI = "23:EO:10:B1:00",
                         EMail = "nikoneigel@gmail.com",
-                        Created = "03.01.2021"
+                        Created = "03.01.2021",
+                        Infected = false
                 )
                 Log.v(TAG, "Registration successful")
                 navigateMainActivity(view, user)
             }
-            catch(e: Exception){
+            catch (e: Exception){
                 Toast.makeText(this@RegisterActivity,
-                    "Error Occurred: ${e.message}",
-                    Toast.LENGTH_LONG).show()
+                        "Error Occurred: ${e.message}",
+                        Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -90,6 +107,9 @@ class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("User", json)
         startActivity(intent)
+    }
+    fun goBack(view: View){
+        finish()
     }
 }
 

@@ -1,8 +1,7 @@
 package com.example.coronawarnpremium.ui.home
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
+import android.util.Log
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
@@ -14,22 +13,13 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
 import com.example.coronawarnpremium.R
-import com.example.coronawarnpremium.classes.User
 import com.example.coronawarnpremium.services.DashboardService
-import com.example.coronawarnpremium.storage.user.UserDao
-import com.example.coronawarnpremium.storage.user.UserDatabase
-import com.example.coronawarnpremium.ui.startup.login.LoginActivity
+import com.example.coronawarnpremium.storage.user.UserDatabaseClient
 import com.example.coronawarnpremium.ui.userrisk.UserHighRiskActivity
 import com.example.coronawarnpremium.ui.userrisk.UserRiskActivity
-import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 private const val TAG = "HomeFragment"
 class HomeFragment : Fragment(), CoroutineScope by MainScope() {
@@ -38,10 +28,8 @@ class HomeFragment : Fragment(), CoroutineScope by MainScope() {
     private var riskBool: Boolean = false
 
     //create UI Elements to identify them later
-    private lateinit var listView:ListView
     private lateinit var username: TextView
     private lateinit var email: TextView
-    private lateinit var imei: TextView
     private lateinit var infectionStatus: TextView
     //risk card elements
     private lateinit var userRisk: TextView
@@ -54,9 +42,6 @@ class HomeFragment : Fragment(), CoroutineScope by MainScope() {
     private lateinit var imageUpdated: ImageView
     private lateinit var riskCard: CardView
 
-    //list of tips
-    private var healthTipsList = ArrayList<String>()
-
     private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
@@ -67,15 +52,10 @@ class HomeFragment : Fragment(), CoroutineScope by MainScope() {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        //initialize elements
-        listView = root.findViewById(R.id.healthTipsList)
 
-        //main card
         username = root.findViewById(R.id.dashboardUsername)
         email = root.findViewById(R.id.dashboardEmail)
-        imei = root.findViewById(R.id.dashboardIMEI)
         infectionStatus = root.findViewById(R.id.infectionStatus)
-
         //risk card
         userRisk = root.findViewById(R.id.userRisk1)
         userRiskEncounters = root.findViewById(R.id.userRiskEncounters1)
@@ -88,15 +68,15 @@ class HomeFragment : Fragment(), CoroutineScope by MainScope() {
         riskCard = root.findViewById(R.id.riskEncounterCard)
 
 
-
-        //get list of current tips
-        getList()
-        //get infection status
-        getInfectionStatus()
-        //get risk card data
-        getRiskCardParams()
-        //get device count
-        //getUserData()
+        launch(Dispatchers.Main) {
+            setUserData()
+        }
+        launch(Dispatchers.Main) {
+            getInfectionStatus()
+        }
+        launch(Dispatchers.Main) {
+            getRiskCardParams()
+        }
 
         riskCard.setOnClickListener {
             navigateUserRiskActivity(it)
@@ -104,65 +84,17 @@ class HomeFragment : Fragment(), CoroutineScope by MainScope() {
 
         return root
     }
-
-    private fun getUserData(){
-
-        /*username.text = user.Username
-        email.text = user.EMail
-        imei.text = user.IMEI*/
-    }
-    private fun getList(){
-        launch(Dispatchers.Main){
-            try {
-                healthTipsList = dashboardService.getHealthTips()
-
-                //set adapter
-                val adapter : ArrayAdapter<String>? =
-                    context?.let { ArrayAdapter(it, android.R.layout.simple_list_item_1, healthTipsList) }
-                listView.adapter = adapter
-                adapter?.notifyDataSetChanged()
-
-                var totalHeight = listView.paddingTop + listView.paddingBottom
-                for (i in 0 until adapter?.count!!) {
-                    var listItem = adapter.getView(i, null, listView)
-                    (listItem as? ViewGroup)?.layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    listItem.measure(0, 0)
-                    totalHeight += listItem.measuredHeight
-                }
-
-                var params = listView.layoutParams
-                params.height = totalHeight + (listView.dividerHeight * (adapter?.count-1))
-                listView.layoutParams = params
-            }
-            catch(e: Exception){
-                Toast.makeText(context,
-                    "Error Occurred: ${e.message}",
-                    Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-    private fun getInfectionStatus(){
-        launch(Dispatchers.Main){
+    private suspend fun getInfectionStatus(){
             try {
                 infectionStatusBool = dashboardService.getInfectionStatus()
-                if (!infectionStatusBool) {
-                    infectionStatus.background.setTintList(ColorStateList(arrayOf(intArrayOf(android.R.attr.state_enabled)), intArrayOf(Color.GREEN)))
-                } else {
-                    infectionStatus.background.setTintList(ColorStateList(arrayOf(intArrayOf(android.R.attr.state_enabled)), intArrayOf(Color.RED)))
-                }
             }
             catch(e:Exception){
                 Toast.makeText(context,
                     "Error Occurred: ${e.message}",
                     Toast.LENGTH_LONG).show()
             }
-        }
     }
-    private fun getRiskCardParams(){
-        launch(Dispatchers.Main){
+    private suspend fun getRiskCardParams(){
             try{
                 riskBool = dashboardService.checkUserRiskEncounters()
                 if(riskBool){
@@ -196,7 +128,6 @@ class HomeFragment : Fragment(), CoroutineScope by MainScope() {
                         "Error Occurred: ${e.message}",
                         Toast.LENGTH_LONG).show()
             }
-        }
     }
     fun navigateUserRiskActivity(view: View){
         var intent: Intent
@@ -207,5 +138,28 @@ class HomeFragment : Fragment(), CoroutineScope by MainScope() {
             intent = Intent(activity, UserHighRiskActivity::class.java)
         }
         startActivity(intent)
+    }
+
+    private suspend fun setUserData(): Boolean{
+        var counter = 0
+        while (counter < 5) {
+            try {
+                Log.v(TAG, "Setting user data")
+                val client = UserDatabaseClient(requireActivity().baseContext)
+                val user = client.getAllUsers()
+                username.text = user?.Username
+                email.text = user?.EMail
+                if (!user?.Infected!!) {
+                    infectionStatus.background.setTintList(ColorStateList(arrayOf(intArrayOf(android.R.attr.state_enabled)), intArrayOf(Color.GREEN)))
+                } else {
+                    infectionStatus.background.setTintList(ColorStateList(arrayOf(intArrayOf(android.R.attr.state_enabled)), intArrayOf(Color.RED)))
+                }
+                break
+            } catch (e: Exception) {
+                counter += 1
+                delay(500)
+            }
+        }
+        return false
     }
 }

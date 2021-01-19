@@ -21,10 +21,6 @@
             android:icon="@drawable/ic_view_list_24px"
             android:title="@string/menu_contact_book" />
         <item
-            android:id="@+id/nav_discovered_devices"
-            android:icon="@drawable/ic_view_list_24px"
-            android:title="@string/menu_discovered" />
-        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit_to_app_24px"
             android:title="@string/menu_logout" />

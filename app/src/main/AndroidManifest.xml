@@ -14,7 +14,6 @@
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,19 +21,46 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoronaWarnPremium">
+        <receiver android:name=".services.ContactRequestService" />
+
+        <activity
+            android:name=".ui.request.RequestDialog"
+            android:label="@string/title_activity_request_dialog"
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
+        <activity
+            android:name=".ui.request.RequestActivity"
+            android:label="@string/title_activity_request"
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
+        <activity
+            android:name=".ui.templates.ContactEncounterTemplate"
+            android:label="@string/title_activity_contact_encounter_template"
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
+        <activity
+            android:name=".ui.contactbook.contactinfo.ContactInfoTemplate"
+            android:label="@string/title_activity_add_contact_dialog"
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
+        <activity
+            android:name=".ui.dialogs.TermsConditionsDialog"
+            android:label="@string/title_activity_terms_conditions_dialog"
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
+        <activity
+            android:name=".ui.dialogs.AddContactDialog"
+            android:label="@string/title_activity_add_contact_dialog"
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
+        <activity android:name=".ui.contactbook.ContactCardTemplate" />
         <activity
             android:name=".ui.startup.register.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar"/>
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
         <activity
             android:name=".ui.startup.login.LoginActivity"
-            android:label="@string/loginButton"
+            android:label="@string/app_name"
             android:theme="@style/Theme.CoronaWarnPremium.NoActionBar">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.userrisk.UserHighRiskActivity"
@@ -44,17 +70,10 @@
             android:name=".ui.userrisk.UserRiskActivity"
             android:label="@string/title_activity_user_risk"
             android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
-        <activity android:name=".ui.discovered.deviceclicked.DeviceClicked" />
-        <activity android:name=".ui.templates.BluetoothOverviewCard" />
-        <activity
-            android:name=".ui.discovered.DiscoveredDevices"
-            android:label="@string/title_activity_discovered_devices"
-            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
     </application>
+
 </manifest>

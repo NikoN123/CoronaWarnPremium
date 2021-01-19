@@ -9,22 +9,22 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Keep
-@Entity(tableName = "contact_db")
+@Entity(tableName = "contact_diary_db")
 data class PersonContactDiary (
     @PrimaryKey(autoGenerate = false)
-    val PersonId: String,
+    val PersondId: String,
+    @ColumnInfo(name = "UserId")
+    val UserId: String,
     @ColumnInfo(name = "Username")
     var Name: String,
-    @ColumnInfo(name = "IMEI")
-    var IMEI: String,
     @ColumnInfo(name = "EMail")
     var EMail: String,
     @ColumnInfo(name = "Location")
     var Location: String,
-    @ColumnInfo(name = "EncounterStart")
-    var EncounterStart: LocalDateTime,
-    @ColumnInfo(name = "EncounterEnd")
-    var EncounterEnd: LocalDateTime
+    @ColumnInfo(name = "EncounterDate")
+    var EncounterDate: LocalDateTime,
+    @ColumnInfo(name="EncounterTime")
+    val EncounterTime: String
 )
 
 fun List<PersonContactDiary>.sortByNameAndIdASC(): List<PersonContactDiary> =

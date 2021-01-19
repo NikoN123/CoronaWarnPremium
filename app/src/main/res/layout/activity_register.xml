@@ -83,6 +83,7 @@
         android:layout_marginStart="207dp"
         android:layout_marginTop="434dp"
         android:clickable="true"
+        android:onClick="goBack"
         android:text="@string/loginHere"
         android:textColor="@color/blueish" />
 

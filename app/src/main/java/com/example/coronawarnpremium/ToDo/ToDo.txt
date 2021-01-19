@@ -1,13 +1,9 @@
 This is the ToDo-List for the development of CoronaWarnPremium App.
 
 ##### Login/Register #####
-- Activate Login/Register Button only, when EditTexts have a value
 - Add Terms & Conditions pop up window and its text
 
 ##### ContactData - Storage #####
-- Create class that implements all functions of the Dao, so it can be used everywhere
-    -> Write extra SQL Statement to update only the ending date/time
-        => Implement it
     -> Write/Test LocalDateTime Converter
     -> Function that sorts out every encounter that is two weeks in the past
 
@@ -26,3 +22,5 @@ This is the ToDo-List for the development of CoronaWarnPremium App.
 
 ##### Misc #####
 - Add SignalR Client to call some function (like notification creation)
+
+- DB mit infected Ids (ca alle 30min abfragen)

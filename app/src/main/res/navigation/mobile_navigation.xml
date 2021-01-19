@@ -12,16 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.coronawarnpremium.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_account"
+        android:name="com.example.coronawarnpremium.ui.account.AccountFragment"
         android:label="@string/menu_account"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_discovered_devices"
-        android:name="com.example.coronawarnpremium.ui.discovered.DiscoveredDevicesFragment"
-        android:label="@string/menu_discovered"
-        tools:layout="@layout/fragment_discovered_devices" />
+        tools:layout="@layout/fragment_account" />
 
     <fragment
         android:id="@+id/nav_contact_diary"

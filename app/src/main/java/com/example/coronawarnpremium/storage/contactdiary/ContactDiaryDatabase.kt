@@ -27,7 +27,7 @@ abstract class ContactDiaryDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         ContactDiaryDatabase::class.java,
-                        "contact_db")
+                        "contact_diary_db")
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
