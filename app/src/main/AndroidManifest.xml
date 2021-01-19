@@ -28,10 +28,6 @@
             android:label="@string/title_activity_request_dialog"
             android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
         <activity
-            android:name=".ui.request.RequestActivity"
-            android:label="@string/title_activity_request"
-            android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
-        <activity
             android:name=".ui.templates.ContactEncounterTemplate"
             android:label="@string/title_activity_contact_encounter_template"
             android:theme="@style/Theme.CoronaWarnPremium.NoActionBar" />
