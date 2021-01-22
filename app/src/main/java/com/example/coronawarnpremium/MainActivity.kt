@@ -8,9 +8,11 @@ import android.view.Menu
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -38,9 +40,6 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    object signalRSingleton{
-        val client = SignalRClient()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,13 +78,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
 
         /** Creating and starting backgroundworker **/
-        val constraint = Constraints.Builder().setRequiresDeviceIdle(true).build()
 
         val data = Data.Builder()
         data.putString("userId", user.UserId)
         Log.v(TAG, "Starting periodic work")
         val request = PeriodicWorkRequestBuilder<ConnectionsApiService>(15, TimeUnit.MINUTES)
-                .setConstraints(constraint)
                 .setInputData(data.build())
                 .build()
         //WorkManager.getInstance(this).enqueue(request)
@@ -94,9 +91,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 ExistingPeriodicWorkPolicy.REPLACE,
                 request)
 
-        if(signalRSingleton.client.checkConnectionStatus() != "CONNECTED"){
-            signalRSingleton.client.createConnection()
-        }
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(request.id)
+            .observe(this, Observer {
+
+                val status: String = it.state.name
+                Toast.makeText(this,status, Toast.LENGTH_SHORT).show()
+            })
+
+        /*signalRSingleton.createSingleton(this)
+        if(signalRSingleton.signalRClient.checkConnectionStatus() != "CONNECTED"){
+            signalRSingleton.signalRClient.createConnection()
+        }*/
 
         try {
             val contactJson = intent.getStringExtra("contact")
@@ -117,6 +122,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         val not = NotificationService(this)
         not.requestReceivedNotification("Request accepted", json)
     }
+
+    /*object signalRSingleton{
+        lateinit var signalRClient: SignalRClient
+        fun createSingleton(context: Context) {
+            signalRClient = SignalRClient(context)
+        }
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

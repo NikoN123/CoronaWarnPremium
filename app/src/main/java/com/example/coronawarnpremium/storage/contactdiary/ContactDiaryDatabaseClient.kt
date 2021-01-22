@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.*
 import com.example.coronawarnpremium.classes.PersonContactDiary
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 private const val TAG = "ContactDiaryClient"
@@ -58,7 +59,7 @@ class ContactDiaryDatabaseClient(context: Context) {
         }
     }
 
-    suspend fun checkContactDate(key: String, date: LocalDateTime) : PersonContactDiary{
+    suspend fun checkContactDate(key: String, date: LocalDate) : PersonContactDiary{
         try {
             Log.v(TAG, "Checking encounter date...")
             return contactDiaryDao.checkEncounterDate(key, date)
@@ -74,5 +75,8 @@ class ContactDiaryDatabaseClient(context: Context) {
         } catch( e: Exception){
             throw e
         }
+    }
+    suspend fun destroy(){
+        db.close()
     }
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coronawarnpremium.R
 import com.example.coronawarnpremium.classes.PersonContactDiary
 import com.example.coronawarnpremium.viewholders.EncounterViewHolder
+import java.time.format.DateTimeFormatter
 
 private const val TAG = "EncounterAdapter"
 class EncounterAdapter : RecyclerView.Adapter<EncounterViewHolder>() {
@@ -21,12 +22,13 @@ class EncounterAdapter : RecyclerView.Adapter<EncounterViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: EncounterViewHolder, position: Int) {
-        holder.encounterID.setText(encounters[position].UserId)
-        holder.encounterUsername.setText(encounters[position].Name)
-        holder.encounterEmail.setText(encounters[position].EMail)
-        holder.encounterLocation.setText(encounters[position].Location)
-        holder.encounterDate.text = (encounters[position].EncounterDate.toString())
-        holder.encounterTime.text = (encounters[position].EncounterTime)
+        val formattedDate = encounters[position].EncounterDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        holder.encounterID.text = encounters[position].UserId
+        holder.encounterUsername.text = encounters[position].Name
+        holder.encounterEmail.text = encounters[position].EMail
+        holder.encounterLocation.text = encounters[position].Location
+        holder.encounterDate.text = formattedDate
+        holder.encounterTime.text = encounters[position].EncounterTime
     }
 
     override fun getItemCount(): Int {
@@ -51,7 +53,12 @@ class EncounterAdapter : RecyclerView.Adapter<EncounterViewHolder>() {
         }
     }
 
+    fun getEncounter(position: Int): PersonContactDiary{
+        return encounters[position]
+    }
+
     fun reloadData(){
+        Log.e(TAG, "Number of encounters: ${encounters.size}")
         notifyDataSetChanged()
     }
 }

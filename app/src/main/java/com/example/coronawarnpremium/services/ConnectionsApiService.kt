@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -34,7 +35,9 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
 
     /** Start the periodic background work process.  **/
     override suspend fun doWork(): Result {
+        Log.v(TAG, "Something's fishy")
         return try{
+            Log.v(TAG, "Starting connections service")
             connectionsClient.stopAdvertising()
             connectionsClient.stopDiscovery()
             userId = inputData.getString("userId").toString()
@@ -66,7 +69,7 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
         Nearby.getConnectionsClient(context)
             .startDiscovery(service_id, endpointDiscoveryCallback, discoveryOptions)
             .addOnSuccessListener {
-                Log.v(TAG, "Discoverystarted successfully")
+                Log.v(TAG, "Discovery started successfully")
             }
             .addOnFailureListener { e: java.lang.Exception? -> throw e!!
                 //Discovering not possible
@@ -120,7 +123,9 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
                 )
             }
 
-            override fun onEndpointLost(endpointId: String) {}
+            override fun onEndpointLost(endpointId: String) {
+                Log.v(TAG, "Endpoint $endpointId lost")
+            }
         }
 
     /** Disconnects from the user.  */
@@ -163,13 +168,10 @@ class ReplacementClass(private val context: Context) : CoroutineScope by MainSco
     fun checkContactDate(userId: String){
         launch(Dispatchers.Main) {
             val uuid = UUID.randomUUID()
-            val date = LocalDateTime.now().format(
-                    DateTimeFormatter
-                            .ofLocalizedDate(FormatStyle.LONG)
-                            .withLocale(Locale.GERMAN)
-            )
+            val time = LocalDateTime.now()
+            val date = LocalDate.now()
             val client = ContactDiaryDatabaseClient(context)
-            val person = client.checkContactDate(userId, LocalDateTime.parse(date))
+            val person = client.checkContactDate(userId, date)
             if (person == null) {
                 val encounter = PersonContactDiary(
                         PersondId = uuid.toString(),
@@ -177,8 +179,8 @@ class ReplacementClass(private val context: Context) : CoroutineScope by MainSco
                         Name = "",
                         EMail = "",
                         Location = "",
-                        EncounterDate = LocalDateTime.parse(date),
-                        EncounterTime = date.format(DateTimeFormatter.ISO_LOCAL_TIME)
+                        EncounterDate = date,
+                        EncounterTime = time.format(DateTimeFormatter.ISO_LOCAL_TIME)
                 )
                 client.insert(encounter)
                 Log.v(TAG, "New encounter saved.")

@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -22,7 +23,7 @@ data class PersonContactDiary (
     @ColumnInfo(name = "Location")
     var Location: String,
     @ColumnInfo(name = "EncounterDate")
-    var EncounterDate: LocalDateTime,
+    var EncounterDate: LocalDate,
     @ColumnInfo(name="EncounterTime")
     val EncounterTime: String
 )

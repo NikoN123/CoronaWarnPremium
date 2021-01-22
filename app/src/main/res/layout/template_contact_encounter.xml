@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
     tools:context=".ui.templates.ContactEncounterTemplate">
 
 
@@ -18,58 +19,55 @@
             android:layout_height="match_parent"
             android:padding="16dp">
 
-            <EditText
+            <TextView
                 android:id="@+id/encounterUserId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="16dp"
+                android:text="Testwsergetrhtherth"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/dialogEncounterUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView17"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:inputType="textPersonName" />
+                android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/encounterUsername"
+            <TextView
+                android:id="@+id/dialogEncounterEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/encounterUserId"
+                android:layout_alignTop="@+id/textView19"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:inputType="textPersonName" />
+                android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/encounterEmail"
+            <TextView
+                android:id="@+id/dialogEncounterLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/encounterUsername"
+                android:layout_alignTop="@+id/textView20"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
-
-            <EditText
-                android:id="@+id/encounterLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/encounterEmail"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:inputType="textPersonName" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/encounterUserId"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="@string/userId"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -78,10 +76,10 @@
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/encounterUsername"
+                android:layout_below="@+id/textView8"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/username"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -90,10 +88,10 @@
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/encounterEmail"
+                android:layout_below="@+id/textView17"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/email"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -102,10 +100,10 @@
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/encounterLocation"
+                android:layout_below="@+id/textView19"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/location"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -127,15 +125,6 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/encounterDate" />
-
-            <Button
-                android:id="@+id/saveEncounterChanges"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/encounterDate"
-                android:layout_marginTop="12dp"
-                android:text="@string/saveChanges" />
 
 
         </RelativeLayout>

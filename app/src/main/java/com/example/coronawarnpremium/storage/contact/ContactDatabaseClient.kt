@@ -66,4 +66,7 @@ class ContactDatabaseClient(context: Context) {
             throw e
         }
     }
+    suspend fun destroy(){
+        db.close()
+    }
 }
