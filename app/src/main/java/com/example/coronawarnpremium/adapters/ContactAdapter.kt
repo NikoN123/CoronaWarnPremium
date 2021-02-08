@@ -31,33 +31,12 @@ class ContactAdapter () : RecyclerView.Adapter<ContactViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun addNewData(contact: Contact){
-        if(!contacts.contains(contact)) {
-            contacts.add(contact)
-            Log.v(TAG, "Contact added")
-            notifyDataSetChanged()
-        }
-    }
-
     fun getContact(position: Int): Contact {
         return contacts[position]
     }
 
-    fun removeContact(contact: Contact){
-        Log.v(TAG, contacts.size.toString())
-        val index = contacts.indexOfFirst { it.UserId == contact.UserId }
-        contacts.removeAt(index)
-        notifyDataSetChanged()
-    }
-
-    fun loadNewData(newList : ArrayList<Contact>){
-        contacts.clear()
-        contacts.addAll(newList)
-        notifyDataSetChanged()
-    }
-
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
-        holder.contactUsername.text = contacts[position].Username
-        holder.contactEmail.text = contacts[position].EMail
+        holder.contactUsername.text = contacts[position].username
+        holder.contactEmail.text = contacts[position].email
     }
 }

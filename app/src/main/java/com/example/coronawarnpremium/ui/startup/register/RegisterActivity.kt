@@ -1,20 +1,22 @@
 package com.example.coronawarnpremium.ui.startup.register
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Toast
+import android.view.Window
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronawarnpremium.MainActivity
 import com.example.coronawarnpremium.R
 import com.example.coronawarnpremium.classes.RegisterRequest
 import com.example.coronawarnpremium.classes.User
+import com.example.coronawarnpremium.services.ApiService
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +50,11 @@ class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             watcher.onTextChanged("", 0, 0, 0)
         }
         username.addTextChangedListener(watcher)
+
+        val termsTextView = findViewById<TextView>(R.id.termsTextView)
+        termsTextView.setOnClickListener {
+            showTermsDialog(this)
+        }
     }
 
     private val watcher: TextWatcher = object : TextWatcher {
@@ -74,30 +81,35 @@ class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         launch(Dispatchers.Main) {
             try{
                 Log.v(TAG, "Attempting to register")
-                /*val user = UserService.UserAdapter.userClient.registerAsync(request)
-                if(user.isSuccessful){
-                    //set user to sharedpref
-                    var prefsEditor = mPrefs.edit()
-                    var gson = Gson()
-                    prefsEditor.putString("User", gson.toJson(user))
-                    prefsEditor.apply()
-                    navigate(view)
-                }*/
-                var user = User(
+                val response = ApiService.UserAdapter.userClient.registerAsync(request)
+                Log.v(TAG, response.toString())
+                if(response.isSuccessful && response.body() != null){
+                    Log.v(TAG, "Registration successful")
+                    val user = response.body()!!.user
+                    user.token = response.body()!!.token
+                    navigateMainActivity(view, user)
+                    Log.v(TAG, user.toString())
+                }
+                else{
+                    Log.v(TAG, response.message())
+                }
+                /*var user = User(
                         UserId = "",
                         Username = "Niko",
                         PasswordHash = "aljesfbaoqEBWF",
                         EMail = "nikoneigel@gmail.com",
                         Created = "03.01.2021",
                         Infected = false
-                )
-                Log.v(TAG, "Registration successful")
-                navigateMainActivity(view, user)
+                )*/
+                //navigateMainActivity(view, user)
+                //Toast.makeText(view.context, "Registered user with Id: ${user.UserId}.", Toast.LENGTH_SHORT).show()
             }
             catch (e: Exception){
-                Toast.makeText(this@RegisterActivity,
-                        "Error Occurred: ${e.message}",
-                        Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Error Occurred: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -110,6 +122,15 @@ class RegisterActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     }
     fun goBack(view: View){
         finish()
+    }
+
+    private fun showTermsDialog(context: Context) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_terms_conditions)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
     }
 }
 

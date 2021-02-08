@@ -8,11 +8,9 @@ import android.view.Menu
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -20,18 +18,18 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.example.coronawarnpremium.classes.Contact
+import com.example.coronawarnpremium.classes.InfectedUsers
 import com.example.coronawarnpremium.classes.User
+import com.example.coronawarnpremium.services.ApiService
 import com.example.coronawarnpremium.services.ConnectionsApiService
 import com.example.coronawarnpremium.services.NotificationService
 import com.example.coronawarnpremium.signalr.SignalRClient
 import com.example.coronawarnpremium.storage.contact.ContactDatabaseClient
+import com.example.coronawarnpremium.storage.infected.InfectedDatabaseClient
 import com.example.coronawarnpremium.storage.user.UserDatabaseClient
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
 
@@ -56,8 +54,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 R.id.nav_home, R.id.nav_account, R.id.nav_contact_book, R.id.nav_contact_diary), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val myContext: Context = this
 
-        var user = User(UserId = "", Username = "", EMail = "", Created = "", Infected = false)
+        var user = User(id = "", username = "", eMail = "", created = "", infected = false, token = "", location = "", name = "")
         val gson = Gson()
         val mPrefs = getPreferences(Context.MODE_PRIVATE)
         val userJson = intent.getStringExtra("User")
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             user = gson.fromJson(userJson, User::class.java)
             addUser(user)
 
-            mPrefs.edit().putString("user", user.UserId).apply()
+            mPrefs.edit().putString("user", user.id).apply()
         }
         else{
             val client = UserDatabaseClient(baseContext)
@@ -80,7 +79,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         /** Creating and starting backgroundworker **/
 
         val data = Data.Builder()
-        data.putString("userId", user.UserId)
+        data.putString("userId", user.id)
         Log.v(TAG, "Starting periodic work")
         val request = PeriodicWorkRequestBuilder<ConnectionsApiService>(15, TimeUnit.MINUTES)
                 .setInputData(data.build())
@@ -91,17 +90,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 ExistingPeriodicWorkPolicy.REPLACE,
                 request)
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(request.id)
-            .observe(this, Observer {
+        /*val instantRequest = OneTimeWorkRequestBuilder<ConnectionsApiService>().setInputData(data.build()).build()
+        WorkManager.getInstance(this).enqueue(instantRequest)*/
 
-                val status: String = it.state.name
-                Toast.makeText(this,status, Toast.LENGTH_SHORT).show()
-            })
-
-        /*signalRSingleton.createSingleton(this)
+        signalRSingleton.createSingleton(this)
         if(signalRSingleton.signalRClient.checkConnectionStatus() != "CONNECTED"){
-            signalRSingleton.signalRClient.createConnection()
-        }*/
+            launch(Dispatchers.Main) {
+                signalRSingleton.signalRClient.createConnection()
+            }
+        }
+
+        launch(Dispatchers.Main){
+            getInfectedIds(myContext)
+        }
 
         try {
             val contactJson = intent.getStringExtra("contact")
@@ -113,22 +114,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         } catch (e: Exception){
             Log.v(TAG, e.message.toString())
         }
-
-        val contact2 = Contact()
-        contact2.Username = "Fabian Kuhn"
-        contact2.UserId = "wrgr-4t32ew-23edfd"
-        contact2.EMail = "blablabla@gmail.com"
-        val json = gson.toJson(contact2)
-        val not = NotificationService(this)
-        not.requestReceivedNotification("Request accepted", json)
     }
 
-    /*object signalRSingleton{
+    object signalRSingleton{
         lateinit var signalRClient: SignalRClient
         fun createSingleton(context: Context) {
             signalRClient = SignalRClient(context)
         }
-    }*/
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -141,10 +134,54 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    private suspend fun getInfectedIds(context: Context){
+        val dbClient = InfectedDatabaseClient(context)
+        val response = ApiService.UserAdapter.tokenClient.getInfectedIds()
+        if(response.isSuccessful && response.body() != null){
+            val frontendInfected = dbClient.getAllInfectedIds()
+            val backendInfected = ArrayList<InfectedUsers>()
+            response.body()!!.forEach {
+                backendInfected.add(InfectedUsers(UserId = it))
+            }
+            frontendInfected.forEach {
+                if(!backendInfected.contains(it)){
+                    Log.i(TAG, "User: ${it.UserId} not infected anymore.")
+                    dbClient.deleteInfectedId(it)
+                }
+            }
+            backendInfected.forEach {
+                if(!frontendInfected.contains(it)){
+                    Log.i(TAG, "New infection: ${it.UserId}.")
+                    dbClient.addInfectedId(it)
+                }
+            }
+        }
+        else{
+            Log.v(TAG, "Nice, no user is currently infected!")
+        }
+    }
+
     private fun addUser(user: User){
         launch(Dispatchers.Main){
+            user.PasswordHash = ""
+            user.location = ""
+            user.name = ""
+            user.dateOfInfection = null
             val client = UserDatabaseClient(this@MainActivity)
-            client.addUser(user)
+            val availableUser = client.getUserByEmail(user.eMail)
+            if(availableUser == null) {
+                client.addUser(user)
+            }
+            else{
+                if(availableUser.name.isBlank()){
+                    user.name = "bla"
+                }
+                user.name = availableUser.name
+                if(availableUser.location.isBlank()){
+                    user.location = "pandora"
+                }
+                client.updateUser(user)
+            }
         }
     }
 
@@ -160,7 +197,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         val rejectButton = dialog.findViewById(R.id.requestDialogReject) as Button
 
         val contactName = dialog.findViewById(R.id.requestDialogUsername) as TextView
-        contactName.text = contact.Username
+        contactName.text = contact.username
 
         acceptButton.setOnClickListener {
             launch(Dispatchers.Main) {

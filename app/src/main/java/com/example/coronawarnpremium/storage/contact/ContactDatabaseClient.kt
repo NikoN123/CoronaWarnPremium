@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.coronawarnpremium.classes.Contact
-import java.time.LocalDateTime
 
 private const val TAG = "ContactClient"
 class ContactDatabaseClient(context: Context) {
@@ -13,7 +12,7 @@ class ContactDatabaseClient(context: Context) {
 
 
     suspend fun insert(contact: Contact){
-        if(contactDao.getContact(contact.UserId) == null){
+        if(contactDao.getContact(contact.id) == null){
             try {
                 Log.v(TAG, "Attempting to save contact")
                 contactDao.insert(contact)

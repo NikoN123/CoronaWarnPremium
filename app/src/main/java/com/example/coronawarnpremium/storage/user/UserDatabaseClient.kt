@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.coronawarnpremium.classes.User
-import com.example.coronawarnpremium.ui.home.HomeFragment
 import kotlin.Exception
 
 private const val TAG = "UserDatabaseClient"
@@ -13,7 +12,7 @@ class UserDatabaseClient(context: Context) {
     private var userDao: UserDao = db.userDao
 
     suspend fun addUser(user: User){
-        if(userDao.getUser(user.UserId) == null){
+        if(userDao.getUser(user.id) == null){
             Log.v(TAG, "Attempting to save user")
             try {
                 userDao.insert(user)
@@ -40,6 +39,15 @@ class UserDatabaseClient(context: Context) {
         }
     }
 
+    suspend fun getUserByEmail(email: String):User?{
+        Log.v(TAG, "Getting user...")
+        try {
+            return userDao.getUserByEmail(email)
+        } catch(e: Exception){
+            throw e
+        }
+    }
+
     suspend fun getAllUsers():User?{
         Log.v(TAG, "Getting users...")
         try {
@@ -61,10 +69,18 @@ class UserDatabaseClient(context: Context) {
             throw e
         }
     }
-    suspend fun clear(user: User){
+    suspend fun delete(user: User){
+        Log.v(TAG, "Deleting user....")
+        try {
+            userDao.delete(user)
+        } catch(e: Exception){
+            throw e
+        }
+    }
+    suspend fun clear(){
         Log.v(TAG, "Clearing database....")
         try {
-            userDao.clear(user)
+            userDao.clear()
         } catch(e: Exception){
             throw e
         }

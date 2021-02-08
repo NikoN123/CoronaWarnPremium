@@ -35,7 +35,6 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
 
     /** Start the periodic background work process.  **/
     override suspend fun doWork(): Result {
-        Log.v(TAG, "Something's fishy")
         return try{
             Log.v(TAG, "Starting connections service")
             connectionsClient.stopAdvertising()
@@ -103,7 +102,7 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
             }
 
             override fun onDisconnected(endpointId: String) {
-                Log.i(TAG, "onDisconnected: disconnected from the opponent")
+                Log.i(TAG, "onDisconnected: disconnected from the other user")
 
             }
         }
@@ -116,6 +115,7 @@ class ConnectionsApiService(private val context: Context, workerParams: WorkerPa
                 info: DiscoveredEndpointInfo
             ) {
                 Log.i(TAG, "onEndpointFound: endpoint found, connecting")
+                Log.e(TAG, "UserId: $userId endpoitId: $endpointId connection: $connectionLifecycleCallback")
                 connectionsClient.requestConnection(
                     userId,
                     endpointId,
@@ -179,12 +179,16 @@ class ReplacementClass(private val context: Context) : CoroutineScope by MainSco
                         Name = "",
                         EMail = "",
                         Location = "",
+                        Infected = false,
+                        Merged = false,
                         EncounterDate = date,
-                        EncounterTime = time.format(DateTimeFormatter.ISO_LOCAL_TIME)
+                        EncounterTime = time.format(DateTimeFormatter.ISO_LOCAL_TIME),
+                        DateString = LocalDateTime.now().toString()
                 )
                 client.insert(encounter)
                 Log.v(TAG, "New encounter saved.")
             }
+            Log.v(TAG, "Person already encountered today.")
         }
     }
 }

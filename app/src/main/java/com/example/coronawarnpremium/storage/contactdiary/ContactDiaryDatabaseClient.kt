@@ -68,14 +68,6 @@ class ContactDiaryDatabaseClient(context: Context) {
         }
     }
 
-    suspend fun deleteContact(person: PersonContactDiary){
-        try{
-            Log.v(TAG, "Clearing contact diary database...")
-            contactDiaryDao.delete(person)
-        } catch( e: Exception){
-            throw e
-        }
-    }
     suspend fun destroy(){
         db.close()
     }

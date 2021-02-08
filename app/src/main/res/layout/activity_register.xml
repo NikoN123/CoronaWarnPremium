@@ -61,6 +61,7 @@
         android:layout_marginStart="132dp"
         android:layout_marginTop="380dp"
         android:enabled="false"
+        android:onClick="register"
         android:text="@string/registerText" />
 
     <TextView
@@ -122,13 +123,14 @@
         android:text="@string/acknowledge" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/termsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="350dp"
         android:layout_toEndOf="@+id/acknowledgeCheckbox"
+        android:clickable="true"
         android:text="@string/terms"
         android:textColor="@color/blueish" />
 

@@ -2,11 +2,11 @@ package com.example.coronawarnpremium.services
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.PendingIntent.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.coronawarnpremium.MainActivity
 import com.example.coronawarnpremium.R
@@ -16,9 +16,9 @@ import com.google.gson.Gson
 private const val TAG = "NotificationService"
 class NotificationService(private val context: Context) {
 
-    fun requestAcceptedNotification(title: String, username: String) {
-
-        var notificationManager =
+    fun requestAcceptedNotification(username: String) {
+        Log.e(TAG, "Creating notification")
+        val notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -28,7 +28,7 @@ class NotificationService(private val context: Context) {
         }
 
         val notificationBuilder = NotificationCompat.Builder(context, "101")
-                .setContentTitle(title)
+                .setContentTitle("Request accepted")
                 .setContentText("$username accepted your contact request!")
                 .setSmallIcon(R.drawable.ic_virus)
                 .setContentIntent(getActivity(
@@ -43,7 +43,7 @@ class NotificationService(private val context: Context) {
 
     }
 
-    fun requestReceivedNotification(title: String, contactJson: String) {
+    fun requestReceivedNotification(contactJson: String, id: String) {
         val gson = Gson()
         val contact = gson.fromJson(contactJson, Contact::class.java)
 
@@ -63,18 +63,20 @@ class NotificationService(private val context: Context) {
         /** Creating the intents and pending intents for the action buttons **/
         val acceptIntent = Intent(context, ContactRequestService::class.java)
             acceptIntent.putExtra("contact", contactJson)
+            acceptIntent.putExtra("requestId", id)
             acceptIntent.putExtra("act_message", "Accepted")
         val acceptPendingIntent = getBroadcast(context, 0, acceptIntent, FLAG_UPDATE_CURRENT)
 
 
         val rejectIntent = Intent(context, ContactRequestService::class.java)
             rejectIntent.putExtra("contact", contactJson)
+            rejectIntent.putExtra("requestId", id)
             rejectIntent.putExtra("act_message", "Rejected")
         val rejectPendingIntent = getBroadcast(context, 1, rejectIntent, FLAG_UPDATE_CURRENT)
 
         val notificationBuilder = NotificationCompat.Builder(context, "101")
-                .setContentTitle(title)
-                .setContentText("${contact.Username} wants to add you as a contact")
+                .setContentTitle("Contact Request")
+                .setContentText("${contact.username} wants to add you as a contact")
                 .setSmallIcon(R.drawable.ic_virus)
                 .setContentIntent(actPending)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

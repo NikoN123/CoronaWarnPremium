@@ -9,7 +9,7 @@ interface ContactDao {
     suspend fun insert(contact: Contact)
     @Update
     suspend fun update(contact: Contact)
-    @Query("SELECT * FROM contact_db WHERE UserId = :key")
+    @Query("SELECT * FROM contact_db WHERE id = :key")
     suspend fun getContact(key: String): Contact
     @Query("SELECT * FROM contact_db")
     suspend fun getAllContacts(): List<Contact>

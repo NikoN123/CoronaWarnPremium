@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ui.startup.register.TermsConditionsDialog">
+
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:text="@string/terms"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/textView22"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="12dp">
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. Wer ist Herausgeber der Corona-Warn-App?
+\n\n
+Diese App wird vom Robert Koch-Institut (RKI) für die deutsche Bundesregierung herausgegeben. Das RKI ist auch dafür verantwortlich, dass Ihre personenbezogenen Daten in Übereinstimmung mit den Vorschriften über den Datenschutz verarbeitet werden.
+\n\n
+2. Ist die Nutzung der App freiwillig?\n
+\n
+Die Nutzung der App ist freiwillig. Es ist allein Ihre Entscheidung, ob Sie die App installieren, welche App-Funktionen Sie nutzen und ob Sie Daten mit anderen teilen. Alle App-Funktionen, die eine Weitergabe Ihrer Begegnungs- oder Gesundheitsdaten erfordern, holen vorher Ihr ausdrückliches Einverständnis ein. Falls Sie ein Einverständnis nicht erteilen oder nachträglich zurücknehmen, entstehen Ihnen keine Nachteile.
+\n
+\n
+3. Auf welcher Rechtsgrundlage werden Ihre Daten verarbeitet?\n
+\n
+Ihre Daten werden vom RKI grundsätzlich nur verarbeitet, wenn Sie zuvor Ihr ausdrückliches Einverständnis erteilt haben. Die Rechtsgrundlage ist Art. 6 Abs. 1 S. 1 lit. a DSGVO sowie im Falle von Gesundheitsdaten Art. 9 Abs. 2 lit. a DSGVO. Sie können ein einmal erteiltes Einverständnis jederzeit wieder zurücknehmen (sogenanntes Widerrufsrecht). Weitere Informationen zu Ihrem Widerrufsrecht finden Sie unter Punkt 12. Die Verarbeitung von Zugriffsdaten für den Abruf der täglichen Statistiken (siehe hierzu Punkt 6 d.) erfolgt im Rahmen der Information der Öffentlichkeit durch das RKI gem. § 4 Abs. 4 BGA-NachfG auf Basis von Art. 6 Abs. 1 S. 1 lit e. DSGVO i.V.m § 3 BDSG.
+\n\n
+4. An wen richtet sich die App?\n
+\n
+Die App richtet sich an Personen, die sich in Deutschland aufhalten und mindestens 16 Jahre alt sind.\n
+\n
+5. Welche Daten werden verarbeitet?\n
+\n
+Das gesamte System der App ist so programmiert, dass so wenig personenbezogene Daten wie möglich verarbeitet werden. Das bedeutet, dass das System bei der Risiko-Ermittlung, der Warnung anderer und dem Abruf des Testergebnisses keine Daten erfasst, die es dem RKI oder anderen Nutzern ermöglichen, auf Ihre Identität, Ihren Namen, Ihren Standort oder andere persönliche Details zu schließen. Ausnahme hierbei ist eine ausdrückliche Erlaubnis des Nutzers. Die App verzichtet daher auch auf jegliche Auswertung Ihres Nutzungsverhaltens durch Analyse-Tools.
+Die von der App verarbeiteten Daten lassen sich den folgenden Kategorien zuordnen:
+\n\n
+a. Zugriffsdaten
+Bei jedem Internet-Datenaustausch der App mit dem Serversystem des RKI (im Folgenden: Serversystem) werden vom Serversystem sogenannte Zugriffsdaten verarbeitet. Dies ist erforderlich, damit die App aktuelle Daten (z. B. für Warnungen) abrufen oder bestimmte auf dem Smartphone gespeicherte Daten an das Serversystem übermitteln kann. Die Zugriffsdaten umfassen folgende Daten:
+\n\n
+	•	IP-Adresse\n
+	•	Datum und Uhrzeit des Abrufs\n
+	•	übertragene Datenmenge (bzw. Paketlänge)\n
+	•	Meldung, ob der Datenaustausch erfolgreich war\n
+\n
+Diese Zugriffsdaten werden verarbeitet, um den technischen Betrieb der App und des Serversystems aufrechtzuerhalten und abzusichern. Sie werden dabei nicht als Nutzer der App persönlich identifiziert und es wird kein Nutzungsprofil erstellt. Eine Speicherung der IP-Adresse über das Ende des Nutzungsvorgangs hinaus erfolgt nicht.
+Um eine unbefugte Zuordnung Ihrer Daten anhand Ihrer IP-Adresse schon während eines Nutzungsvorgangs zu verhindern, greift die App nur über einen speziellen Eingangsserver auf das Serversystem zu. Der Eingangsserver leitet die von der App angeforderten oder übermittelten Daten dann ohne die IP-Adresse an den jeweils zuständigen Server weiter, so dass die IP-Adresse innerhalb des Serversystems nicht verarbeitet wird.
+\n\n
+b. Begegnungsdaten\n
+Sobald Sie das COVID-19-Benachrichtigungssystem Ihres iPhones (dort ‘Begegnungsmitteilungen’ genannt) oder Ihres Android-Smartphones (dort ‘COVID-19-Benachrichtigungen’ genannt) aktivieren, sendet Ihr Smartphone per Bluetooth sogenannte Begegnungsdaten aus, die von anderen Smartphones in Ihrer Nähe aufgezeichnet werden können. Umgekehrt empfängt Ihr Smartphone auch die Begegnungsdaten von anderen Smartphones. Die ausgesendeten Begegnungsdaten umfassen:
+\n\n
+	•	eindeutige Kennnummern (im Folgenden eindeutige, zufällig ermittelte IDs)\n
+	•	Bluetooth-Protokollversion\n
+	•	Bluetooth-Sendeleistung in Dezibel Milliwatt (dBm)\n
+\n
+Bei aufgezeichneten Begegnungen umfassen die Begegnungsdaten zusätzlich:\n
+\n
+	•	Tag, Zeitpunkt und Dauer der Begegnung\n
+	•	Bluetooth-Empfangsstärke in dBm\n
+\n
+Ihr Smartphone kann nicht über diese IDs identifiziert werden. Die von Ihrem Smartphone ausgesendeten eigenen Begegnungsdaten und die aufgezeichneten Begegnungsdaten der Personen, mit denen Sie Kontakt hatten, werden auf Ihrem Smartphone gespeichert und jeweils nach 14 Tage gelöscht. Auf die gleiche Weise werden Ihre ausgesendeten Begegnungsdaten verarbeitet, wenn sie von den Smartphones anderer App-Nutzer aufgezeichnet werden.
+Bitte beachten Sie: Das COVID-19-Benachrichtigungssystem ist eine Funktion Ihres Betriebssystems. Anbieter und Verantwortliche für dieses System sind daher Apple (wenn Sie ein iPhone haben) und Google (wenn Sie ein Android-Smartphone haben). Insoweit unterliegt die Datenverarbeitung den Datenschutzbestimmungen dieser Unternehmen und liegt außerhalb des Verantwortungs- und Einflussbereichs des RKI. Die tatsächlichen Bezeichnungen, Bedienschritte und Einstellmöglichkeiten können je nach Version und Einstellung Ihres Betriebssystems von der Darstellung in dieser Datenschutzerklärung abweichen. Weitere Informationen stellen Ihnen die jeweiligen Hersteller zur Verfügung:
+\n\n
+	•	Informationen von Google für Android-Smartphones finden Sie auf Ihrem Gerät unter ‘Einstellungen’ > Google > COVID-19-Benachrichtigungen unter dem Link ‘Weitere Informationen’\n
+	•	Informationen von Apple für iPhones finden Sie auf Ihrem Gerät unter ‘Einstellungen’ > ‘Begegnungsmitteilungen’ unter dem Link ‘So funktionieren Begegnungsmitteilungen …’.\n
+\n
+\n
+c. Gesundheitsdaten\n
+Gesundheitsdaten sind alle Daten, die Informationen zum Gesundheitszustand einer Person enthalten. Dazu gehören nicht nur Angaben zu früheren und aktuellen Krankheiten, sondern auch zu Krankheitsrisiken einer Person (z. B. das Risiko, dass eine Person sich mit dem Coronavirus angesteckt hat). Die App verarbeitet Gesundheitsdaten in folgenden Fällen:
+\n\n
+	•	wenn eine Risiko-Begegnung erkannt wird\n
+	•	wenn Sie über die App ein Testergebnis abrufen\n
+	•	wenn Sie Ihre Begegnungen über die App vor einer möglichen Ansteckung warnen\n
+	•	wenn Sie Angaben zum Beginn von eventuellen Corona-Symptomen machen\n
+\n
+Die Einzelheiten werden unter Punkt 6 erläutert.\n
+\n
+d. Einträge im Kontakt-Tagebuch\n
+Anhand Ihrer begegneten Kontakte wird automatisch ein Kontaktbuch mit den IDs der anderen Nutzer erstellt. Haben Sie bereits einen Kontakt anhand seiner ID eingespeichert, wird diese auch zu seinen Daten aufgelöst. Diese Angaben werden verschlüsselt auf Ihrem Smartphone gespeichert. Die Kontakt-Tagebuch-Einträge dienen nur Ihnen als Gedächtnisstütze. Das RKI oder andere Stellen können auf die Einträge im Kontakt-Tagebuch nicht zugreifen. Das Kontakt-Tagebuch kann Ihnen helfen, Ihre persönlichen Kontakte der letzten 14 Tage nachzuvollziehen. Falls Sie Corona-positiv getestet werden sollten und das Gesundheitsamt Ihre Mithilfe bei der Kontaktnachverfolgung erbittet, können Sie dem Gesundheitsamt somit schnell die benötigten Informationen mitteilen.
+Die Einträge sollen nicht an Dritte und nicht über unsichere Kommunikationskanäle weitergegeben werden. Das zuständige Gesundheitsamt wird Ihnen mitteilen, welche Informationen es für die Kontaktnachverfolgung von Ihnen benötigt und wie Sie diese zur Verfügung stellen können.
+\n
+\n
+\n
+\n
+\n
+6. Wofür werden Ihre Daten verarbeitet?\n
+\n
+a. Risiko-Ermittlung\n
+Die Risiko-Ermittlung ist eine Hauptfunktion der App. Sie dient dazu, Sie bei möglichen Begegnungen mit Corona-positiv getesteten Personen (Risiko-Begegnungen) länderübergreifend zu warnen, Ihr persönliches Ansteckungsrisiko zu bewerten und Ihnen Verhaltens- und Gesundheitshinweise zu geben.
+Hierzu ruft die App vom Serversystem mehrmals täglich eine aktuelle Liste mit den IDs und eventuellen Angaben zum Symptombeginn von Nutzern ab, die Corona-positiv getestet wurden und über die Corona-Premium-App eine Warnung ausgelöst haben (im Folgenden: Positiv-Liste). Die IDs in der Positiv-Liste enthalten zusätzlich einen Übertragungsrisiko-Wert und eine Angabe zur Art der Diagnose (siehe hierzu Punkt 6 c.).
+Die App gibt die IDs aus der Positiv-Liste an das COVID-19-Benachrichtigungssystem weiter, welches diese mit den aufgezeichneten IDs Ihrer Begegnungen abgleicht. Wenn das COVID-19-Benachrichtigungssystem dabei eine Übereinstimmung feststellt, übergibt es der App die zu der jeweiligen Risiko-Begegnung aufgezeichneten Begegnungsdaten. Diese Begegnungsdaten und die Angaben in der Positiv-Liste (Übertragungsrisiko-Wert, Angaben zum Symptombeginn) werden von der App bewertet, um Ihr Ansteckungsrisiko zu ermitteln. Die Regeln für die Bewertung dieser Informationen (beispielsweise welchen Einfluss die Dauer eines Kontakts auf das Ansteckungsrisiko hat) basieren auf den aktuellen wissenschaftlichen Erkenntnissen des RKI. Bei neuen Erkenntnissen kann das RKI die Bewertungsregeln aktualisieren, indem die Bewertungs-Einstellungen der App angepasst werden. Die neuen Bewertungs-Einstellungen werden in diesem Fall zusammen mit der Positiv-Liste an die App übermittelt.
+Das Ansteckungsrisiko wird ausschließlich offline in der App berechnet und weder an das COVID-19-Benachrichtigungssystem noch an sonstige Empfänger (auch nicht an das RKI, andere Gesundheitsbehörden in Deutschland oder anderen Ländern, Apple, Google und sonstige Dritte) weitergegeben.
+\n\n
+b. Testergebnis abrufen\n
+Wenn Sie einen Corona-Test gemacht haben, können Sie Ihr Testergebnis über die App abrufen. Die App benachrichtigt Sie, sobald Ihr Testergebnis vorliegt. Dies setzt voraus, dass das Testlabor an das Serversystem angeschlossen ist und Sie im Rahmen der Testdurchführung gesondert Ihr Einverständnis zur Übermittlung Ihres Testergebnisses erteilt haben. Testergebnisse von Laboren, die nicht an das Serversystem der App angeschlossen sind, können nicht angezeigt werden. Wenn Sie keinen QR-Code erhalten haben, können Sie diese Funktion ebenfalls nicht nutzen.
+\n
+\n
+\n
+\n
+\n
+\n
+c. Andere warnen\n
+Wenn Sie Corona-positiv getestet sind und Ihre IDs mit der App teilen, können andere Nutzer dieser oder einer anderen offiziellen Corona-App, denen Sie begegnet sind, länderübergreifend gewarnt werden. In diesem Fall übermittelt die App folgende Daten an das Serversystem:
+\n\n
+	•	Ihre eigenen ID der letzten 14 Tage\n
+	•	eventuelle Angaben zum Symptombeginn\n
+\n
+Vor der Weitergabe Ihres Testergebnisses (genauer gesagt: der Übermittlung Ihrer ID) an das Serversystem fügt die App den Daten einen Übertragungsrisiko-Wert und eine Angabe zur Art der durchgeführten Tests hinzu. Da die Warnfunktion der App nur bei im Labor bestätigten Testergebnissen genutzt werden kann, ist die Art des Tests für alle Nutzer gleich. Der Übertragungsrisiko-Wert ist ein Schätzwert zur Ansteckungswahrscheinlichkeit an den einzelnen Tagen des 14-Tage-Zeitraums. Da die Ansteckungswahrscheinlichkeit von der Dauer und dem Verlauf der Infektion abhängt, kann so beispielsweise berücksichtigt werden, dass am Tag einer Risiko-Begegnung die Gefahr einer Ansteckung in der Regel je geringer ist, desto mehr Zeit seit Symptombeginn verstrichen ist. Diese zusätzlichen Übertragungsrisiko-Werte ermöglichen eine genauere Bestimmung der Ansteckungswahrscheinlichkeit für andere Nutzer.
+\n\n
+7. Welche Berechtigungen benötigt die App?\n
+\n
+Die App benötigt Zugriff auf verschiedene Funktionen und Schnittstellen Ihres Smartphones. Dazu ist es erforderlich, dass Sie der App bestimmte Berechtigungen erteilen. Das Berechtigungssystem richtet sich nach den Vorgaben Ihres Betriebssystems. So können auf Ihrem Smartphone beispielsweise Einzelberechtigungen zu Berechtigungskategorien zusammengefasst sein, wobei Sie der Berechtigungskategorie nur insgesamt zustimmen können. Bitte beachten Sie, dass ohne die von der App angeforderten Berechtigungen keine oder nur wenige App-Funktionen genutzt werden können.
+\n\n
+a. Technische Voraussetzungen (alle Smartphones)\n
+\n
+•	Die App benötigt eine Internetverbindung, um mit dem Serversystem Daten austauschen zu können.\n
+•	Die Bluetooth-Funktion muss aktiviert sein, damit Ihr Smartphone die eigene ID aussenden und die IDs von anderen Smartphones aufzeichnen kann.\n
+•	Die App muss auf Ihrem Smartphone im Hintergrundbetrieb laufen können, um Ihr Ansteckungsrisiko automatisch zu ermitteln und den Status Ihres Tests abfragen zu können. Wenn Sie den Hintergrundbetrieb deaktivieren, müssen Sie alle Aktionen in der App selbst starten.
+\n\n
+\n
+b. Android-Smartphones\n
+Wenn Sie ein Android-Smartphone verwenden, müssen außerdem folgende Systemfunktionen aktiviert sein:\n
+\n
+	•	Das COVID-19-Benachrichtigungssystem von Android (COVID-19-Benachrichtigungen)\n
+	•	Die Standortermittlung muss unter Android bis Version 10 aktiviert sein, damit Ihr Smartphone nach Bluetooth-Signalen anderer Smartphones sucht. Standortdaten werden dabei jedoch nicht erhoben.\n
+	•	Um über Änderungen Ihres Ansteckungsrisikos und den Status von Testergebnissen benachrichtigt werden zu können, muss die Benachrichtigungsfunktion aktiviert sein. Die Benachrichtigungsfunktion ist im Betriebssystem standardmäßig aktiviert.
+\n\n
+Daneben benötigt die App folgende Berechtigungen:\n
+\n
+	•	Die Funktion ‘Testergebnis abrufen’ benötigt Zugriff auf die Kamera, um den QR-Code scannen zu können.\n
+\n
+\n
+c. iPhones (Apple iOS)\n
+Wenn Sie ein iPhone verwenden, müssen folgende Systemfunktionen aktiviert sein:\n
+\n
+	•	Das COVID-19-Benachrichtigungssystem von iOS (Begegnungsmitteilungen)\n
+	•	Um über Änderungen Ihres Ansteckungsrisikos und den Test-Status benachrichtigt werden zu können, müssen Mitteilungen aktiviert sein.\n
+\n
+Die App benötigt zudem folgende Berechtigungen:\n
+\n
+	•	Die Funktion ‘Testergebnis abrufen’ benötigt Zugriff auf die Kamera, um den QR-Code scannen zu können.\n
+\n
+\n
+8. Wann werden Ihre Daten gelöscht?\n
+\n
+Die Speicherdauer richtet sich danach, für welche Zwecke bzw. App-Funktionen Ihre Daten jeweils gespeichert worden sind. Bei der Festlegung der Speicherdauer berücksichtigt das RKI die aktuellen wissenschaftlichen Erkenntnisse zur Inkubationszeit (Dauer von der Ansteckung bis zum Ausbruch der Krankheit), die bis zu 14 Tage beträgt und zur Dauer des Ansteckungsrisikos für Mitmenschen einer infizierten Person nach dem Ende der Inkubationszeit. Soweit unter Punkt 6 keine kürzere Speicherdauer genannt wird, gelten folgende Fristen:
+\n\n
+a. Daten auf Ihrem Smartphone\n
+Die Positiv-Listen werden nach 14 Tagen aus dem App-Speicher gelöscht. Das für Sie ermittelte Ansteckungsrisiko (z. B. ‘niedriges Risiko’) wird nach jeder Aktualisierung, spätestens aber nach 14 Tagen aus dem App-Speicher gelöscht. Sofern Sie ein positives Testergebnis abgerufen haben, wird das Token im App-Speicher gelöscht, sobald Sie eine Warnung auslösen. Die Einträge im Kontakt-Tagebuch bleiben für 16 Tage auf Ihrem Smartphone gespeichert und werden dann automatisch gelöscht. Sie können diese Einträge jederzeit auch vorzeitig selbst löschen.
+\n\n
+b. Daten auf Serversystemen\n
+Positiv-Listen werden nach 14 Tagen von allen Serversystemen (einschließlich dem Austausch-Server) gelöscht. Alle anderen Daten werden spätestens nach 21 Tagen gelöscht.\n
+\n
+9. An wen werden Ihre Daten weitergegeben?\n
+\n
+Wenn Sie andere Nutzer über die App warnen, werden Ihr Testergebnis (in Form Ihrer ID der letzten 14 Tage) sowie optionale Angaben zum Symptombeginn an die jeweils verantwortlichen Gesundheitsbehörden und von dort an die Serversysteme weitergegeben.
+Im Falle einer Infektion kann ein entsprechendes Gesundheitsamt Ihre Email vom Serversystem abrufen, um mit Ihnen leichter in Kontakt treten zu können.\n
+\n
+\n
+\n
+\n
+\n
+\n
+10. Wie können Sie Ihr Einverständnis zurücknehmen?\n
+\n
+Ihnen steht das Recht zu, ein in der App erteiltes Einverständnis gegenüber dem RKI jederzeit mit Wirkung für die Zukunft zurückzunehmen. Sofern die jeweilige Verarbeitung Ihrer Daten bereits durchgeführt worden ist, kann die Verarbeitung jedoch nicht mehr rückgängig gemacht werden. Insbesondere hat das RKI keine Möglichkeit, Ihre bereits an andere Nutzer übermittelte ID von deren Smartphones zu löschen.
+\n\n
+11. Welche weiteren Datenschutzrechte haben Sie?
+\n\n
+Soweit das RKI personenbezogene Daten von Ihnen verarbeitet, stehen Ihnen außerdem folgende Datenschutzrechte zu:
+\n\n
+	•	die Rechte aus den Artikeln 15, 16, 17, 18, 20 und 21 DSGVO,\n
+	•	das Recht, den behördlichen Datenschutzbeauftragten des RKI zu kontaktieren und Ihr Anliegen vorzubringen (Art. 38 Abs. 4 DSGVO) und\n
+	•	das Recht, sich bei einer Aufsichtsbehörde für den Datenschutz zu beschweren. Dazu können Sie sich entweder an die zuständige Aufsichtsbehörde an Ihrem Wohnort oder an die für des RKI zuständige Behörde wenden. Die zuständige Aufsichtsbehörde für das RKI ist der Bundesbeauftragte für den Datenschutz und die Informationsfreiheit, Graurheindorfer Str. 153, 53117 Bonn.
+\n\n
+Diese Datenschutzrechte stehen Ihnen entsprechend auch gegenüber den für die Datenverarbeitung verantwortlichen Gesundheitsbehörden der am Austausch-Server teilnehmenden Länder zu, sofern Sie Ihre ID der letzten Tage zur Warnung Ihrer Mitmenschen übermittelt haben (siehe Punkt 7).
+Bitte beachten Sie, dass die vorgenannten Datenschutzrechte nur erfüllt werden können, wenn die Daten, auf die sich die geltend gemachten Ansprüche beziehen, eindeutig Ihrer Person zugeordnet werden können. Dies wäre nur möglich, wenn über die App weitere personenbezogene Daten erhoben würden, die eine eindeutige Zuordnung der an das Serversystem übermittelten Daten zu Ihrer Person oder Ihrem Smartphone ermöglichen. Da dies für die Zwecke der App nicht erforderlich ist, ist das RKI zu einer solchen zusätzlichen Datenerhebung nicht verpflichtet (Art. 11 Abs. 2 DSGVO). Zudem würde dies dem erklärten Ziel zuwiderlaufen, so wenige Daten wie möglich zu erheben. Deshalb werden die vorgenannten Datenschutzrechte auch mit zusätzlich von Ihnen bereitgestellten Informationen zu Ihrer Identität in der Regel nicht erfüllt werden können.
+\n
+\n
+\n
+\n
+\n
+12. Datenschutzbeauftragter und Kontakt\n
+\n
+Fragen und Anliegen zum Datenschutz können Sie an den behördlichen Datenschutzbeauftragten des RKI senden: Robert Koch-Institut, z. H. des Datenschutzbeauftragten, Nordufer 20, 13353 Berlin oder per E-Mail an: datenschutz@rki.de.
+\n\n
+Stand: 25.01.2021
+" />
+</ScrollView>
+</RelativeLayout>

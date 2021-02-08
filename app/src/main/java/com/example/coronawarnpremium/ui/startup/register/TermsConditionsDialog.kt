@@ -1,4 +1,4 @@
-package com.example.coronawarnpremium.ui.dialogs
+package com.example.coronawarnpremium.ui.startup.register
 
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -10,12 +10,7 @@ class TermsConditionsDialog : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_terms_conditions_dialog)
+        setContentView(R.layout.dialog_terms_conditions)
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
     }
 }

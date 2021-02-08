@@ -1,9 +1,7 @@
 package com.example.coronawarnpremium.ui.contactbook
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,23 +15,27 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.coronawarnpremium.MainActivity
 import com.example.coronawarnpremium.R
 import com.example.coronawarnpremium.adapters.ContactAdapter
 import com.example.coronawarnpremium.classes.Contact
+import com.example.coronawarnpremium.classes.User
+import com.example.coronawarnpremium.services.ApiService
 import com.example.coronawarnpremium.storage.contact.ContactDatabaseClient
-import com.example.coronawarnpremium.ui.contactbook.contactinfo.ContactInfoTemplate
+import com.example.coronawarnpremium.storage.user.UserDatabaseClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 private const val TAG = "ContactBookFragment"
 class ContactBookFragment : Fragment(), CoroutineScope by MainScope(), ItemTouchListener.OnRecyclerClickListener {
     val recyclerViewAdapter = ContactAdapter()
     private lateinit var viewModel: ContactBookViewModel
+    private lateinit var user: User
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +48,11 @@ class ContactBookFragment : Fragment(), CoroutineScope by MainScope(), ItemTouch
 
         root.findViewById<FloatingActionButton>(R.id.fabContact).setOnClickListener { view ->
             showDialog(view)
+        }
+
+        launch(Dispatchers.Main) {
+            val dbClient = UserDatabaseClient(root.context)
+            user = dbClient.getAllUsers()!!
         }
 
         val recyclerView = root.findViewById<RecyclerView>(R.id.contactsRecyclerView)
@@ -128,24 +135,26 @@ class ContactBookFragment : Fragment(), CoroutineScope by MainScope(), ItemTouch
         val dismissButton = dialog.findViewById(R.id.closeContactRequestButton) as Button
         sendButton.setOnClickListener {
             launch(Dispatchers.Main) {
-                /*Log.v(TAG, "Sending request")
+                Log.v(TAG, "Sending request")
                 try {
+                    ApiService.UserAdapter.setUserToken(user.token)
                     val response =
-                        ApiService.UserAdapter.userClient.sendContactRequest(email.text.toString())
+                        ApiService.UserAdapter.tokenClient.sendContactRequest(user.id, email.text.toString())
                     Log.v(TAG, "Request sent")
                     if(response.isSuccessful && response.body() != null){
                         dialog.dismiss()
                         Snackbar.make(view, resources.getString(R.string.contactRequestSuccessful), Snackbar.LENGTH_LONG)
                             .show()
+                        MainActivity.signalRSingleton.signalRClient.checkConnectionStatus()
                     }
                     else if(response.isSuccessful && response.body() == null){
                         dialog.dismiss()
-                        Snackbar.make(view, resources.getString(R.string.contactEmailNotFound), Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, response.message(), Snackbar.LENGTH_LONG)
                             .show()
                     }
                     else{
                         dialog.dismiss()
-                        Snackbar.make(view, resources.getString(R.string.requestError), Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, response.message(), Snackbar.LENGTH_LONG)
                             .show()
                     }
                 } catch (e: Exception){
@@ -153,16 +162,16 @@ class ContactBookFragment : Fragment(), CoroutineScope by MainScope(), ItemTouch
                         Snackbar.make(view, it1, Snackbar.LENGTH_LONG)
                             .show()
                     }
-                }*/
-                val contact = Contact()
-                contact.EMail = "nikoneigel@gmail.com"
-                contact.Username = "Niko Neigel"
-                contact.UserId = "qouf-312rh2-v345p9-24r"
+                }
+                /*val contact = Contact()
+                contact.email = "nikoneigel@gmail.com"
+                contact.username = "Niko Neigel"
+                contact.id = "ce7c6b92-c7a6-4ab8-9e42-27b642a485b4"
                 val client = ContactDatabaseClient(requireActivity())
                 client.insert(contact)
                 loadData()
-                Log.v(TAG, "Contact with username: ${contact.Username}, email: ${contact.EMail} and id: ${contact.UserId} added.")
-                dialog.dismiss()
+                Log.v(TAG, "Contact with username: ${contact.username}, email: ${contact.email} and id: ${contact.id} added.")
+                dialog.dismiss()*/
             }
         }
         dismissButton.setOnClickListener {
@@ -179,9 +188,9 @@ class ContactBookFragment : Fragment(), CoroutineScope by MainScope(), ItemTouch
         dialog?.setCanceledOnTouchOutside(true)
         val deleteButton = dialog?.findViewById(R.id.deleteContact) as Button
         val contactName = dialog.findViewById(R.id.contactInfoName) as TextView
-        contactName.text = contact.Username
+        contactName.text = contact.username
         val contactMail = dialog.findViewById(R.id.contactInfoMail) as TextView
-        contactMail.text = contact.EMail
+        contactMail.text = contact.email
         deleteButton.setOnClickListener {
             launch(Dispatchers.Main) {
                 val contactDbClient = ContactDatabaseClient(view.context)
@@ -189,7 +198,7 @@ class ContactBookFragment : Fragment(), CoroutineScope by MainScope(), ItemTouch
                 ContactAdapter.contacts = contactDbClient.getAllContacts()
                 //onDataAvailable()
                 loadData()
-                Log.v(TAG, "Contact ${contact.Username} deleted.")
+                Log.v(TAG, "Contact ${contact.username} deleted.")
                 dialog.dismiss()
             }
         }

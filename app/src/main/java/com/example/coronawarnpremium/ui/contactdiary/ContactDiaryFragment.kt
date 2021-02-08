@@ -21,6 +21,7 @@ import com.example.coronawarnpremium.adapters.ContactAdapter
 import com.example.coronawarnpremium.adapters.EncounterAdapter
 import com.example.coronawarnpremium.classes.Contact
 import com.example.coronawarnpremium.classes.PersonContactDiary
+import com.example.coronawarnpremium.services.DashboardService
 import com.example.coronawarnpremium.storage.contact.ContactDatabaseClient
 import com.example.coronawarnpremium.storage.contactdiary.ContactDiaryDatabaseClient
 import com.example.coronawarnpremium.ui.contactbook.ItemTouchListener
@@ -65,7 +66,6 @@ class ContactDiaryFragment : Fragment(), CoroutineScope by MainScope(), ItemTouc
         launch(Dispatchers.Main){
             val client = ContactDiaryDatabaseClient(context)
             EncounterAdapter.encounters = client.getAllContacts()
-            Log.e(TAG, "Number of encounters: ${EncounterAdapter.encounters.size}")
             client.destroy()
             notifyAdapter()
         }

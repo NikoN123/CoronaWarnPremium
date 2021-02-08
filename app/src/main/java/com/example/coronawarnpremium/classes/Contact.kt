@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey
 
 @Keep
 @Entity(tableName = "contact_db")
-data class Contact (
+data class Contact(
         @PrimaryKey(autoGenerate = false)
-        var UserId: String = "",
+        var id: String = "",
         @ColumnInfo(name = "Username")
-        var Username: String = "",
+        var username: String = "",
         @ColumnInfo(name = "EMail")
-        var EMail: String = ""
+        var email: String = ""
 )

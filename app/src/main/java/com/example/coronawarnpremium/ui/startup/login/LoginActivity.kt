@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.example.coronawarnpremium.MainActivity
 import com.example.coronawarnpremium.R
 import com.example.coronawarnpremium.classes.User
+import com.example.coronawarnpremium.services.ApiService
 import com.example.coronawarnpremium.ui.startup.register.RegisterActivity
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +34,7 @@ private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 private const val TAG = "LoginActivity"
 class LoginActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
     private lateinit var id:String
+    private val gson = Gson()
 
     private val bluetoothAdapter: BluetoothAdapter by lazy {
         val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -74,25 +76,19 @@ class LoginActivity : AppCompatActivity(), CoroutineScope by MainScope()  {
         launch(Dispatchers.Main) {
             try{
                 Log.v(TAG, "Attempting to login")
-                /*val response = UserService.UserAdapter.userClient.loginAsync(email.text.toString(), password.text.toString())
+                val response = ApiService.UserAdapter.userClient.loginAsync(email.text.toString(), password.text.toString())
                 if(response.isSuccessful && response.body() != null){
-                    navigateMainActivity(view, response.body()!!)
-                }*/
-                val user = User(
-                    UserId = id,
-                    Username = "Niko",
-                    PasswordHash = "aljesfbaoqEBWF",
-                    EMail = "nikoneigel@gmail.com",
-                    Created = "03.01.2021",
-                    Infected = false
-                )
-                Log.v(TAG, "Login successful")
-                navigateMainActivity(view, user)
+                    Log.v(TAG, "Login successfull. Body: ${response.body()!!}")
+                    val user = response.body()!!.user
+                    user.token = response.body()!!.token
+                    navigateMainActivity(view, user)
+                }
             }
             catch(e: Exception){
                 Toast.makeText(this@LoginActivity,
                     "Error Occurred: ${e.message}",
                     Toast.LENGTH_LONG).show()
+                Log.e(TAG, "Error: ${e.message}")
             }
         }
     }
